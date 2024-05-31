@@ -14,6 +14,11 @@ const routes = [
     name: 'DataComparison',
     component: () => import('@/views/ComparePage.vue')
   },
+  {
+    path:'/other',
+    name:'Other',
+    component: () => import('@/views/Other.vue')
+  }
 ]
 
 const router = createRouter({
