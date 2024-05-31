@@ -9,11 +9,12 @@
     >
       <el-table-column prop="city" label="城市" width="180"></el-table-column>
       <el-table-column
-        v-for="indicator in selectedIndicators"
-        :key="indicator"
+        v-for="(indicator, index) in selectedIndicators"
+        :key="index"
         :prop="indicator"
-        :label="indicator"
+        :label="getLabel(indicator)"
         sortable
+        :sort-method="(a, b) => customSort(a, b, indicator)"
       ></el-table-column>
     </el-table>
   </div>
@@ -28,17 +29,20 @@ const tableData = ref([]);
 
 // 获取全部的指标数据，不全部展示的话，进行过滤。indicator是要展示的指标
 const getDataFromBackend = async (indicators) => {
-  const mockData = await getAllIndex();
+  let mockData = await getAllIndex();
+  // mockData = JSON.parse(mockData)
   return new Promise(resolve => {
     setTimeout(() => {
       const result = [];
-      for (const city in mockData) {
-        const row = { city };
+      mockData.forEach(item => {
+        const city = item.city.C_name;
+        const row = {city};
         indicators.forEach(indicator => {
-          row[indicator] = mockData[city] ? mockData[city][indicator] : 'N/A';
+          let indicator_value = item && item[indicator] !== null ? Number(parseFloat(item[indicator]).toFixed(3)) : '暂无数据';
+          row[indicator] = indicator_value;
         });
         result.push(row);
-      }
+      });
       resolve(result);
     }, 1000);
   });
@@ -46,8 +50,29 @@ const getDataFromBackend = async (indicators) => {
 
 // 模拟需要展示的指标数据
 // TODO: 替换这些要展示的指标
-const selectedIndicators = ref(['index1', 'index2', 'index3']);
+const selectedIndicators = ref(['CO2','CDR_CO2', 'PCO2', 'CC_Fuel','NRE_Fuel']);
+const viewIndicators = ref(['CO2排放', '单位GDP碳排放', '人均CO2', '煤炭占一次能源消费比重', '非化石能源占一次能源消费比重'])
+// 获取指标对应的展示名称
+const getLabel = (indicator) => {
+  return viewIndicators.value[selectedIndicators.value.indexOf(indicator)];
+};
 
+function customSort(a, b, prop) {
+  const aValue = a[prop];
+  const bValue = b[prop];
+
+  if (isNaN(aValue) || isNaN(bValue)) {
+    if (isNaN(aValue) && isNaN(bValue)) {
+      return a[prop] > b[prop] ? 1 : -1; // 非数字之间的比较
+    } else if (isNaN(aValue)) {
+      return 1; // 如果a是非数字，排在后面
+    } else {
+      return -1; // 如果b是非数字，排在前面
+    }
+  } else {
+    return aValue - bValue; // 数字之间的比较
+  }
+}
 // 在组件挂载时获取数据
 onMounted(async () => {
   tableData.value = await getDataFromBackend(selectedIndicators.value);
@@ -66,7 +91,7 @@ onMounted(async () => {
 }
 
 .custom-table {
-  width: 80%;
+  width: 90%;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;

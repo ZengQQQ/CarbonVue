@@ -6,7 +6,7 @@ import router from "@/router";
 
 
 const baseApi = axios.create({
-  baseURL: "http://localhost:8080/",
+  baseURL: "http://localhost:8000/",
   // 跨域访问时是否需要使用凭证
   withCredentials: false,
   // 可以在这里添加拦截器

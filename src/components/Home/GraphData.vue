@@ -1,7 +1,7 @@
 <template>
     <div class="map-container">
+        <div ref="main" class="map" :style="{ height: '500px' }"></div>
         <button ref="backBtn" v-if="showBackBtn" @click="goBack">返回</button>
-        <div ref="main" :style="{ height: '800px' }"></div>
     </div>
 </template>
 
@@ -143,6 +143,8 @@ function setOption(name, data) {
             {
                 map: name,
                 roam: true,
+                zoom: data[0].level === 'province' ? 1.5 : 1, //初始缩放比例
+                center: data[0].level === 'province' ? [105, 36] : null, //地图中心点
                 selectedMode: 'single',
                 label: {
                     show: true,
