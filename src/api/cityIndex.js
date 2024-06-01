@@ -3,7 +3,7 @@ import baseApi from "@/api/baseUrl";
 
 // 获取选中城市的指标
 export const getCityIndex = (cities) => {
-    return baseApi.get('/data/citys', {
+    return baseApi.get('/citys', {
       params: {
         cities
       }

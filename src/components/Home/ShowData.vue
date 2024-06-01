@@ -83,18 +83,23 @@ onMounted(async () => {
 .table-container {
   display: flex;
   justify-content: center;
-  align-items: center;
   padding: 20px;
   background-color: #f5f5f5;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1400px;
+  margin: auto;
+  height: auto;
 }
 
 .custom-table {
-  width: 90%;
+  width: 100%;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
+  font-weight: 500;
+  font-size: medium;
+  font-family: serif;
 }
 
 .el-table {

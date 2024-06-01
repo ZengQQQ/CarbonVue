@@ -168,8 +168,8 @@ function setOption(name, data) {
             },
         ],
         visualMap: {
-            left: 'right',
-            top: 'top',
+            left: 'left',
+            top: 'bottom',
             min: 0,
             max: data[0].level === 'province' ? 50000 : 15000,
             inRange: {
@@ -225,7 +225,7 @@ onMounted(async () => {
 });
 
 onUnmounted(() => {
-    myChart.dispose();
+    myChart.value.dispose();
 });
 
 </script>
@@ -233,5 +233,17 @@ onUnmounted(() => {
 <style scoped>
 .map-container {
     text-align: center;
+}
+
+.map {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1400px;
+  margin: 20px auto;
 }
 </style>

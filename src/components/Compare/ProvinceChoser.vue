@@ -9,6 +9,8 @@
       class="select"
     />
     <el-button type="primary" @click="addCity" class="button">添加城市</el-button>
+    <el-button type="danger" @click="clearCities">清空城市</el-button>
+
 
     <div class="selected-cities">
       <div class="tags">
@@ -16,7 +18,6 @@
           {{ city }}
         </el-tag>
       </div>
-      <el-button type="danger" @click="clearCities">清空城市</el-button>
     </div>
   </div>
 </template>
@@ -61,6 +62,9 @@ const removeCity = (city) => {
 
 const clearCities = () => {
   selectedCities.value = [];
+  emit('updateSelectedCities', selectedCities.value);
+  ElMessage.success('城市已清空');
+
 };
 
 watch(selectedCities.value, (newValue) => {
@@ -71,7 +75,7 @@ watch(selectedCities.value, (newValue) => {
 <style scoped>
 .province-chooser-container {
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
